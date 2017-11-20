@@ -22,9 +22,6 @@ public class GameBoard {
 
 		// Tidy up 0,0
 		gameBoard[0][0] ="x";
-	}
-	
-	public void generateShips(String [][] gameBoard) {
 		
 		// Set sizes of ship
 		int battleshipLength = 4;
@@ -33,71 +30,91 @@ public class GameBoard {
 		int subLength = 1;
 		
 		// Generate battleship
-		createShip(gameBoard, battleshipLength, false);
+		placeShip(gameBoard, battleshipLength);
+		displayBoard(gameBoard);
 				
+						
 		// Generate cruisers
-		createShip(gameBoard, cruiserLength, false);
-		createShip(gameBoard, cruiserLength, false);
+		placeShip(gameBoard, cruiserLength);
+		placeShip(gameBoard, cruiserLength);
 				
+						
 		// Generate destroyers
-		createShip(gameBoard,destroyerLength, false);
-		createShip(gameBoard,destroyerLength, false);
-		createShip(gameBoard,destroyerLength, false);
-				
+		placeShip(gameBoard,destroyerLength);
+		placeShip(gameBoard,destroyerLength);
+		placeShip(gameBoard,destroyerLength);
+						
 		// Generate subs
-		createShip(gameBoard,subLength, false);
-		createShip(gameBoard,subLength, false);
-		createShip(gameBoard,subLength, false);
+		placeShip(gameBoard,subLength);
+		placeShip(gameBoard,subLength);		
+		placeShip(gameBoard,subLength);
 	}
 	
-	public static void createShip(String [][] gameBoard,int lengthOfShip, boolean runAgain) {
-
+	public void placeShip(String [][] gameBoard,int lengthOfShip) {
+		// Declare variables
+		int point1 = 0;
+		int point2 = 0;
+		int point1Copy = 0;
+		int point2Copy = 0;
+		boolean valid = true;
 		
-		// Test variable
+		// Define random number range
+		int colsRange = 7;
+		int rowsRange = 7;
 		
-		if (runAgain == true) {
-			System.out.println("It ran again");
-		}
+		// Get random number
+		point1 = getRandom(colsRange);
+		point2 = getRandom(rowsRange);
 		
+		// Make a copy of that random number
+		point1Copy = point1;
+		point2Copy = point2;
 		
-		// Generate random point
-		Random numberGen = new Random();
-		
-		// Create variables to store random point
-		int randomNumber = 0;
-		int randomNumber2 = 0;
-		int storedRandomNumber = 0;
-		int storedRandomNumber2 = 0;
-		
-		// Generate random point
-		randomNumber = numberGen.nextInt(6) + 1;
-		randomNumber2 = numberGen.nextInt(9) + 1;
-		
-		storedRandomNumber = randomNumber;
-		storedRandomNumber2 = randomNumber2;
-		
-		storedRandomNumber= storedRandomNumber - 1;
-		
-		for(int index = 0; index < lengthOfShip; index++) {
-			storedRandomNumber= storedRandomNumber + 1;
-			if(gameBoard[storedRandomNumber][storedRandomNumber2] == ("S")) {
-				System.out.println("Overlay Alert!! Kernal Panic");
-				runAgain = true;
-				createShip(gameBoard, lengthOfShip, runAgain);
-				
+		point1Copy = point1Copy - 1;
+		for(int index = 0; index < lengthOfShip;index++) {
+			point1Copy ++;
+			
+			// Check if position is equal to a ship
+			if(gameBoard[point1Copy][point2Copy] != "~") {
+				valid = false;
 			}
-		}
-		
-		randomNumber = randomNumber - 1;
-		
-		// Draw ship according to its size
-		for(int index = 0; index < lengthOfShip; index++) {
-			randomNumber = randomNumber+1;
-			gameBoard[randomNumber][randomNumber2] = "S";
+			// If valid is equal to false then restart again
+			if(valid == false) {
+				placeShip(gameBoard, index);
+			}
 			
 		}
+		
+		System.out.println(valid);
+		// The ships generated position is valid and will not overlay another ship
+		// So we can generate place our ship
+		if(valid == true) {
+			point1 = point1- 1;
+			for(int index = 0; index < lengthOfShip; index++) {
+				point1 = point1 + 1;
+				if(lengthOfShip == 4) {
+					gameBoard[point1][point2] = "B";
+				}
+				if(lengthOfShip == 3) {
+					gameBoard[point1][point2] = "C";
+				}
+				if(lengthOfShip == 2) {
+					gameBoard[point1][point2] = "D";
+				}
+				if(lengthOfShip == 1) {
+					gameBoard[point1][point2] = "S";
+				}	
+			}
+		}
 	}
-
+	public static int getRandom(int range) {
+		
+		// Generate 
+		Random rn = new Random();
+		int point = rn.nextInt(range) + 1;
+		return point;
+	}
+	
 	public void displayBoard(String[][] gameBoard) {
 		
 		// Display the current state of the board
@@ -105,4 +122,5 @@ public class GameBoard {
 		System.out.println("\n"+Arrays.deepToString(gameBoard).replace("], ", "\n").replace("[", "").replace("]", "").replaceAll(",",""));
 		
 	}
+
 }

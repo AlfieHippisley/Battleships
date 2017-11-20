@@ -17,7 +17,7 @@ public class Game {
 		
 		// Set the board for use
 		gameBoard1.setBoard(gameBoard,gridSize);
-		gameBoard1.generateShips(gameBoard);
+		
 		gameBoard1.displayBoard(gameBoard);
 		
 		// Get users first shot
