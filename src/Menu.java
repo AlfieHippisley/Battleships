@@ -22,10 +22,8 @@ public class Menu {
 			displayMenu = false;
 			
 			// Create game object
-			Game game1 = new Game();
-			
-			// Run game
-			game1.playGame();
+			Battleships game1 = new Battleships();
+
 		break;
 		
 		// Case 3 (How to play)
