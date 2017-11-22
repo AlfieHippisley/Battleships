@@ -1,76 +1,108 @@
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Ship {
 	
 	private int lengthOfShip;
-	private boolean alive;
 	
 	public Ship(int size) {
 		lengthOfShip = size;
 	}
 	
 	public void placeShip(String[][] gameBoard) {
-		// Declare variables
-		int point1 = 0;
-		int point2 = 0;
-		int point1Copy = 0;
-		int point2Copy = 0;
-		boolean valid = true;
-				
-		// Define random number range
-		int colsRange = 6;
-		int rowsRange = 6;
-				
-		// Get random number
-		point1 = getRandom(colsRange);
-		point2 = getRandom(rowsRange);
-				
-		// Make a copy of that random number
-		point1Copy = point1;
-		point2Copy = point2;
-				
-		point1Copy = point1Copy - 1;
-		for(int index = 0; index < lengthOfShip;index++) {
-			point1Copy ++;
+		
+		boolean placed = false;
+		
+		while(!placed) {
+			// Declare variables
+			int point1 = 0;
+			int point2 = 0;
+			point1 = getRandom();
+			point2 = getRandom();
+			boolean rotation = getBoolean();
+			boolean valid = false;
+			
+			valid = checkLocation(lengthOfShip, gameBoard, point1, point2, rotation);
+			
+			if (valid) {
+				// Vertical rotation
+				if (rotation = true) {
+					point1 = point1 - 1;
+					for(int index =0 ; index<lengthOfShip; index++) {
+						point1++;
+						
+						if(lengthOfShip == 4) {
+							gameBoard[point1][point2] = "B";
+						}
+						else if(lengthOfShip == 3) {
+							gameBoard[point1][point2] = "C";
+						}
+						else if(lengthOfShip == 2) {
+							gameBoard[point1][point2] = "D";
+						}
+						else if(lengthOfShip == 1) {
+							gameBoard[point1][point2] = "S";
+						}
+					}
+					placed = true;
+				}
 					
-			// Check if position is equal to a ship
-			if(gameBoard[point1Copy][point2Copy] != "~") {
-				valid = false;
-			}
-			// If valid is equal to false then restart again
-			if(valid == false) {
-				placeShip(gameBoard);
-			}
-					
-		}
-				
-		System.out.println(valid);
-		// The ships generated position is valid and will not overlay another ship
-		// So we can generate place our ship
-		if(valid == true) {
-			point1 = point1- 1;
-			for(int index = 0; index < lengthOfShip; index++) {
-				point1 = point1 + 1;
-				if(lengthOfShip == 4) {
-					gameBoard[point1][point2] = "B";
-				}
-				if(lengthOfShip == 3) {
-					gameBoard[point1][point2] = "C";
-				}
-				if(lengthOfShip == 2) {
-					gameBoard[point1][point2] = "D";
-				}
-				if(lengthOfShip == 1) {
-					gameBoard[point1][point2] = "S";
+				// horizontal rotation
+				if (rotation = false) {
+					point1++;
+					point2 = point2 - 1;
+					for(int index =0 ; index<lengthOfShip; index++) {
+						point2++;
+						if(lengthOfShip == 4) {
+							gameBoard[point1][point2] = "B";
+						}
+						else if(lengthOfShip == 3) {
+							gameBoard[point1][point2] = "C";
+						}
+						else if(lengthOfShip == 2) {
+							gameBoard[point1][point2] = "D";
+						}
+						else if(lengthOfShip == 1) {
+							gameBoard[point1][point2] = "S";
+						}
+					}
+					placed = true;
 				}	
 			}
 		}
 	}
 	
-	public static int getRandom(int range) {
-		// Generate 
-		Random rn = new Random();
-		int point = rn.nextInt(range) + 1;
+	public static boolean checkLocation(int lengthOfShip, String[][] gameBoard, int pointA, int pointB, boolean rotation) {
+		
+		boolean valid = true;
+		pointA = pointA -1;
+		for (int index = 0; index < lengthOfShip; index++) {
+			pointA = pointA + 1;
+			
+			// Vertical rotation
+			if(pointB > 5) {
+				valid = false;
+				return valid;
+			}
+				
+			// If location is not water then it is invalid.
+			if(gameBoard[pointA][pointB] != "~") {
+				valid = false;
+				return valid;
+			}
+		}
+			
+		valid = true;
+		return valid;
+	}
+	
+	public static int getRandom() {
+		// Generate random number
+		int point = ThreadLocalRandom.current().nextInt(1, 8);
 		return point;
+	}
+	
+	public static boolean getBoolean() {
+		// Generate random boolean
+	       return Math.random() < 0.5;
 	}
 }
