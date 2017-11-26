@@ -1,7 +1,16 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class GameBoard {
 	
+	private int totalShotsTaken;
+	private int totalShotsHit;
 	private int gridSize;
 	private String[][] gameBoard;
 	
@@ -38,6 +47,103 @@ public class GameBoard {
 		System.out.println("\n"+Arrays.deepToString(gameBoard).replace("], ", "\n").replace("[", "").replace("]", "").replaceAll(",",""));
 	}
 	
+	public void startNewGame() {
+		
+	}
+	
+	public void loadGame() {
+		// Notify user
+		System.out.println("Loading Game,");
+		
+		// Set file reader and buffered reader
+		FileReader fileReader = null;
+	    BufferedReader bufferedReader = null;
+		
+	    // Set save file name
+		String fileName = "gameSave";
+		
+		// Set string which will hold the data being read in
+		String nextLine = null;
+		
+		try {
+			// Create file reader and buffered reader
+	    	fileReader = new FileReader(fileName);
+	        bufferedReader = new BufferedReader(fileReader); 
+	        
+	        // Read in a line from the file
+	        nextLine = bufferedReader.readLine();
+	      
+	        // Nested loop to set each line read in to the array
+	        for(int rows = 0; rows < gameBoard.length;rows++) {
+	            for(int cols = 0; cols < gameBoard.length;cols++) {
+	            	gameBoard[rows][cols] = nextLine;
+	            	// Get new line
+	            	nextLine = bufferedReader.readLine();
+	            }
+	        }
+		}
+	    catch (FileNotFoundException e){
+	    	System.out.println("Sorry, your file was not found.");
+		}
+						
+		catch (IOException e){
+			System.out.println("Sorry, there has been a problem opening or writing to the file");
+		}
+						
+		finally {	            
+			if (bufferedReader != null) {
+				try{
+					bufferedReader.close();    
+				}
+					            
+				catch (IOException e){
+					System.out.println("An error occurred when attempting to close the file");
+				}
+			}
+		}
+	}
+	
+	public void saveGame() {
+		// Notify user
+		System.out.println("Running file save,");
+
+		// Set file reader and buffered reader
+		FileOutputStream outputStream = null;
+        PrintWriter printWriter = null;
+        
+        // Set save file name
+     	String fileName = "gameSave";
+        
+        try{
+        	// Create file reader and buffered reader
+            outputStream = new FileOutputStream(fileName);
+            printWriter = new PrintWriter(outputStream); 
+            
+            // Nested loop to set each array position in to the file
+            for(int rows = 0; rows < gameBoard.length;rows++) {
+            	for(int cols = 0; cols < gameBoard.length;cols++) {
+            		printWriter.println(gameBoard[rows][cols]);
+            	}
+            }
+            
+            System.out.print("File save complete sucessfully, game will now exit");
+            // Close print writer
+            printWriter.close();
+            System.exit(0);
+        }
+        
+        catch (IOException e){
+            System.out.println("Sorry, there has been a problem opening or writing to the file");
+        }
+        
+        finally{
+            if (printWriter != null){
+            	 printWriter.close();
+            }
+        }
+		
+	}
+	
 	public void generateEnemy() {
 		Ship battleship = new Ship(4);
 		Ship cruiser1 = new Ship(3);
@@ -58,5 +164,18 @@ public class GameBoard {
 		Sub1.placeShip(gameBoard);
 		Sub2.placeShip(gameBoard);
 		Sub3.placeShip(gameBoard);
+	}
+	
+	public void getUserShot() {
+		
+		// Get user shot
+		System.out.println("\nPlease enter where you would like to shoot (e.g 1,2)\nIf you would like to save and quit, enter '-1'.\n\nEnter : ");
+		Scanner entry = new Scanner(System.in);
+		int userInput = entry.nextInt();
+		
+		// Process user shot
+		if(userInput == -1) {
+			saveGame();
+		}
 	}
 }

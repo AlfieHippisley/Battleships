@@ -20,12 +20,11 @@ public class Ship {
 			point2 = getRandom();
 			boolean rotation = getBoolean();
 			boolean valid = false;
-			
 			valid = checkLocation(lengthOfShip, gameBoard, point1, point2, rotation);
 			
 			if (valid) {
 				// Vertical rotation
-				if (rotation = true) {
+				if (rotation) {
 					point1 = point1 - 1;
 					for(int index =0 ; index<lengthOfShip; index++) {
 						point1++;
@@ -44,10 +43,11 @@ public class Ship {
 						}
 					}
 					placed = true;
+					break;
 				}
 					
 				// horizontal rotation
-				if (rotation = false) {
+				if (!rotation) {
 					point1++;
 					point2 = point2 - 1;
 					for(int index =0 ; index<lengthOfShip; index++) {
@@ -66,6 +66,7 @@ public class Ship {
 						}
 					}
 					placed = true;
+					break;
 				}	
 			}
 		}
@@ -74,24 +75,45 @@ public class Ship {
 	public static boolean checkLocation(int lengthOfShip, String[][] gameBoard, int pointA, int pointB, boolean rotation) {
 		
 		boolean valid = true;
-		pointA = pointA -1;
-		for (int index = 0; index < lengthOfShip; index++) {
-			pointA = pointA + 1;
-			
-			// Vertical rotation
-			if(pointB > 5) {
-				valid = false;
-				return valid;
-			}
+		
+		if(rotation) {
+			pointA = pointA -1;
+			for (int index = 0; index < lengthOfShip; index++) {
+				pointA = pointA + 1;
 				
-			// If location is not water then it is invalid.
-			if(gameBoard[pointA][pointB] != "~") {
-				valid = false;
-				return valid;
+				// Vertical rotation
+				if(pointA > (9 - lengthOfShip+1)) {
+					valid = false;
+					return valid;
+				}
+					
+				// If location is not water then it is invalid.
+				if(gameBoard[pointA][pointB] != "~") {
+					valid = false;
+					return valid;
+				}
 			}
 		}
-			
-		valid = true;
+		
+		if(!rotation) {
+			pointB = pointB -1;
+			for (int index = 0; index < lengthOfShip; index++) {
+				pointB = pointB + 1;
+				
+				// Vertical rotation
+				if(pointB > (9 - lengthOfShip+1)) {
+					valid = false;
+					return valid;
+				}
+					
+				// If location is not water then it is invalid.
+				if(gameBoard[pointA][pointB] != "~") {
+					valid = false;
+					return valid;
+				}
+			}
+		}	
+		
 		return valid;
 	}
 	
