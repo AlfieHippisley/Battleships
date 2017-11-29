@@ -28,19 +28,7 @@ public class Ship {
 					point1 = point1 - 1;
 					for(int index =0 ; index<lengthOfShip; index++) {
 						point1++;
-						
-						if(lengthOfShip == 4) {
-							gameBoard[point1][point2] = "B";
-						}
-						else if(lengthOfShip == 3) {
-							gameBoard[point1][point2] = "C";
-						}
-						else if(lengthOfShip == 2) {
-							gameBoard[point1][point2] = "D";
-						}
-						else if(lengthOfShip == 1) {
-							gameBoard[point1][point2] = "S";
-						}
+						gameBoard[point1][point2] = "S";
 					}
 					placed = true;
 					break;
@@ -51,18 +39,8 @@ public class Ship {
 					point2 = point2 - 1;
 					for(int index =0 ; index<lengthOfShip; index++) {
 						point2++;
-						if(lengthOfShip == 4) {
-							gameBoard[point1][point2] = "B";
-						}
-						else if(lengthOfShip == 3) {
-							gameBoard[point1][point2] = "C";
-						}
-						else if(lengthOfShip == 2) {
-							gameBoard[point1][point2] = "D";
-						}
-						else if(lengthOfShip == 1) {
-							gameBoard[point1][point2] = "S";
-						}
+						gameBoard[point1][point2] = "S";
+						
 					}
 					placed = true;
 					break;

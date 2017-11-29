@@ -13,19 +13,29 @@ public class GameBoard {
 	private int totalShotsHit;
 	private int gridSize;
 	private String[][] gameBoard;
+	private String[][] shipBoard;
 	
 	public GameBoard(){
-		gridSize = 9;
+		gridSize = 10;
 		totalShotsTaken = 0;
 		totalShotsHit = 0;
 		
 		// Create array with our grid size restrictions
 		gameBoard = new String[gridSize][gridSize];
+		// Ship board array stores ship locations not visible to user
+		shipBoard = new String[gridSize][gridSize];
 
-		// Fill array with 'water'
+		// Fill gameBoard array with 'water'
 		for(int rows=0 ; rows < gridSize ; rows++ ) {
 			for(int cols=0 ; cols < gridSize ; cols++ ) {
 				gameBoard[rows][cols]="~";
+			}
+		}
+		
+		// Fill ship array with water
+		for(int rows=0 ; rows < gridSize ; rows++ ) {
+			for(int cols=0 ; cols < gridSize ; cols++ ) {
+				shipBoard[rows][cols]="~";
 			}
 		}
 		
@@ -45,6 +55,8 @@ public class GameBoard {
 		
 	public void displayGameBoard() {
 		// Display the current state of the board
+		System.out.println("\nCurrent Board\n"+"---------------------------------------------------------");
+		System.out.println("\n"+Arrays.deepToString(shipBoard).replace("], ", "\n").replace("[", "").replace("]", "").replaceAll(",",""));
 		System.out.println("\nCurrent Board\n"+"---------------------------------------------------------");
 		System.out.println("\n"+Arrays.deepToString(gameBoard).replace("], ", "\n").replace("[", "").replace("]", "").replaceAll(",",""));
 	}
@@ -80,6 +92,14 @@ public class GameBoard {
 	            	nextLine = bufferedReader.readLine();
 	            }
 	        }
+	        for(int rows = 0; rows < shipBoard.length;rows++) {
+	            for(int cols = 0; cols < shipBoard.length;cols++) {
+	            	shipBoard[rows][cols] = nextLine;
+	            	// Get new line
+	            	nextLine = bufferedReader.readLine();
+	            }
+	        }
+	        
 		}
 	    catch (FileNotFoundException e){
 	    	System.out.println("Sorry, your file was not found.");
@@ -131,6 +151,13 @@ public class GameBoard {
             	}
             }
             
+            // Nested loop to set each array position in to the file
+            for(int rows = 0; rows < shipBoard.length;rows++) {
+            	for(int cols = 0; cols < shipBoard.length;cols++) {
+            		printWriter.println(shipBoard[rows][cols]);
+            	}
+            }
+            
             System.out.print("File save complete sucessfully\n");
             // Close print writer
             printWriter.close();
@@ -145,9 +172,6 @@ public class GameBoard {
             	 printWriter.close();
             }
         }
-        
-        playGame();
-		
 	}
 	
 	public void generateEnemy() {
@@ -164,15 +188,15 @@ public class GameBoard {
 		Ship Sub3 = new Ship(1);
 		
 		// Place each of the ships passing the gameBoard array
-		battleship.placeShip(gameBoard);
-		cruiser1.placeShip(gameBoard);
-		cruiser2.placeShip(gameBoard);
-		destroyer1.placeShip(gameBoard);
-		destroyer2.placeShip(gameBoard);
-		destroyer3.placeShip(gameBoard);
-		Sub1.placeShip(gameBoard);
-		Sub2.placeShip(gameBoard);
-		Sub3.placeShip(gameBoard);
+		battleship.placeShip(shipBoard);
+		cruiser1.placeShip(shipBoard);
+		cruiser2.placeShip(shipBoard);
+		destroyer1.placeShip(shipBoard);
+		destroyer2.placeShip(shipBoard);
+		destroyer3.placeShip(shipBoard);
+		Sub1.placeShip(shipBoard);
+		Sub2.placeShip(shipBoard);
+		Sub3.placeShip(shipBoard);
 	}
 	
 	public void playGame() {
@@ -199,15 +223,14 @@ public class GameBoard {
 			int userInput2 = entry.nextInt();
 			
 			// If a ship then mark a hit
-			if(gameBoard[userInput][userInput2] != "~") {
+			if(shipBoard[userInput][userInput2] == "S") {
 				gameBoard[userInput][userInput2] = "H";
-				System.out.println(totalShotsHit);
 				totalShotsHit++;
 				totalShotsTaken++;
 			}
 			
 			// If water then mark a miss
-			else if(gameBoard[userInput][userInput2] == "~") {
+			else if(shipBoard[userInput][userInput2] != "S") {
 				gameBoard[userInput][userInput2] = "M";
 				totalShotsTaken++;
 			}
