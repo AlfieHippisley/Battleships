@@ -46,7 +46,6 @@ public class Menu {
 			System.exit(0);
 		break;
 		}
-		
 	}
 	
 	public static void main(String[] args) {
