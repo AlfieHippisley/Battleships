@@ -73,18 +73,6 @@ public class Ship {
 	
 	public static boolean checkLocation(int lengthOfShip, String[][] gameBoard, int pointA, int pointB, boolean rotation) {
 		
-		String rot = null;
-		
-		if(rotation) {
-			rot = "Vertical";
-		}
-		
-		if(!rotation) {
-			rot = "Horizontal";
-		}
-		
-		//System.out.println("Checking Ship Position for " + rot);
-		
 		boolean valid = true;
 		
 		if(rotation) {

@@ -16,6 +16,8 @@ public class GameBoard {
 	
 	public GameBoard(){
 		gridSize = 9;
+		totalShotsTaken = 0;
+		totalShotsHit = 0;
 		
 		// Create array with our grid size restrictions
 		gameBoard = new String[gridSize][gridSize];
@@ -47,11 +49,8 @@ public class GameBoard {
 		System.out.println("\n"+Arrays.deepToString(gameBoard).replace("], ", "\n").replace("[", "").replace("]", "").replaceAll(",",""));
 	}
 	
-	public void startNewGame() {
-		
-	}
-	
 	public void loadGame() {
+		
 		// Notify user
 		System.out.println("Loading Game,");
 		
@@ -103,6 +102,12 @@ public class GameBoard {
 		}
 	}
 	
+	public void saveGameAndQuit() {
+		saveGame();
+		System.out.print("Game will now quit");
+		System.exit(0);
+	}
+	
 	public void saveGame() {
 		// Notify user
 		System.out.println("Running file save,");
@@ -126,10 +131,9 @@ public class GameBoard {
             	}
             }
             
-            System.out.print("File save complete sucessfully, game will now exit");
+            System.out.print("File save complete sucessfully\n");
             // Close print writer
             printWriter.close();
-            System.exit(0);
         }
         
         catch (IOException e){
@@ -141,10 +145,14 @@ public class GameBoard {
             	 printWriter.close();
             }
         }
+        
+        playGame();
 		
 	}
 	
 	public void generateEnemy() {
+		
+		// Create the ships passing the size of each ship
 		Ship battleship = new Ship(4);
 		Ship cruiser1 = new Ship(3);
 		Ship cruiser2 = new Ship(3);
@@ -155,6 +163,7 @@ public class GameBoard {
 		Ship Sub2 = new Ship(1);
 		Ship Sub3 = new Ship(1);
 		
+		// Place each of the ships passing the gameBoard array
 		battleship.placeShip(gameBoard);
 		cruiser1.placeShip(gameBoard);
 		cruiser2.placeShip(gameBoard);
@@ -166,16 +175,46 @@ public class GameBoard {
 		Sub3.placeShip(gameBoard);
 	}
 	
-	public void getUserShot() {
+	public void playGame() {
 		
-		// Get user shot
-		System.out.println("\nPlease enter where you would like to shoot (e.g 1,2)\nIf you would like to save and quit, enter '-1'.\n\nEnter : ");
-		Scanner entry = new Scanner(System.in);
-		int userInput = entry.nextInt();
 		
-		// Process user shot
-		if(userInput == -1) {
-			saveGame();
+		while(totalShotsHit <= 18) {
+			displayGameBoard();
+			// Get user shot
+			System.out.println("\nPlease enter where you would like to shoot (e.g 1,2)"
+					+ "\nIf you would like to just save the game, enter '-1'."
+					+ "\nIf you would like to save and quit, enter '-2'.\n\nEnter : ");
+			Scanner entry = new Scanner(System.in);
+			int userInput = entry.nextInt();
+		
+			// Process user shot
+			if(userInput == -1) {
+				saveGame();
+			}
+			
+			if(userInput == -2) {
+				saveGameAndQuit();
+			}
+
+			int userInput2 = entry.nextInt();
+			
+			// If a ship then mark a hit
+			if(gameBoard[userInput][userInput2] != "~") {
+				gameBoard[userInput][userInput2] = "H";
+				System.out.println(totalShotsHit);
+				totalShotsHit++;
+				totalShotsTaken++;
+			}
+			
+			// If water then mark a miss
+			else if(gameBoard[userInput][userInput2] == "~") {
+				gameBoard[userInput][userInput2] = "M";
+				totalShotsTaken++;
+			}
 		}
+		
+		// Display victory message
+		System.out.println("You have won with a total of " + totalShotsTaken +" shots taken.");
+		System.out.println("Of those " + totalShotsTaken + " shots taken, " + totalShotsHit + " shots hit a target.");
 	}
 }

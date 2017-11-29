@@ -6,17 +6,15 @@ public class Battleships {
 	
 	public void startNewGame() {
 		int shots = 0;
+		
 		// Create game board
 		GameBoard game1 = new GameBoard();
 				
 		// Generate enemy
 		game1.generateEnemy();
-				
-		// Run game
-		while(shots <50) {
-			game1.displayGameBoard();
-			game1.getUserShot();
-		}
+		
+		game1.playGame();
+		
 	}
 	
 	public void loadGame() {
