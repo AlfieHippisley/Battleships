@@ -24,26 +24,28 @@ public class GameBoard {
 		gameBoard = new String[gridSize][gridSize];
 		// Ship board array stores ship locations not visible to user
 		shipBoard = new String[gridSize][gridSize];
-
+	}
+		
+	public void setGrid() {
 		// Fill gameBoard array with 'water'
 		for(int rows=0 ; rows < gridSize ; rows++ ) {
 			for(int cols=0 ; cols < gridSize ; cols++ ) {
 				gameBoard[rows][cols]="~";
 			}
 		}
-		
+				
 		// Fill ship array with water
 		for(int rows=0 ; rows < gridSize ; rows++ ) {
 			for(int cols=0 ; cols < gridSize ; cols++ ) {
 				shipBoard[rows][cols]="~";
 			}
 		}
-		
+				
 		// Add letters to the top of the board to allow user to choose location
 		for(int index =1 ; index < gridSize ; index++) {
 			gameBoard[index][0]= String.valueOf(index);
 		}
-						
+								
 		// Add numbers to the side of the board to allow user to choose location
 		for(int index =1 ; index < gridSize ; index++) {
 			gameBoard[0][index]= String.valueOf(index);
@@ -52,12 +54,11 @@ public class GameBoard {
 		// Tidy up 0,0
 		gameBoard[0][0] =".";
 	}
-		
+	
 	public void displayGameBoard() {
-		// Display the current state of the board
-		System.out.println("\nCurrent Board\n"+"---------------------------------------------------------");
-		System.out.println("\n"+Arrays.deepToString(shipBoard).replace("], ", "\n").replace("[", "").replace("]", "").replaceAll(",",""));
-		System.out.println("\nCurrent Board\n"+"---------------------------------------------------------");
+		// Display the current state of the board but move it down the console to reduce screen clutter
+		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"+
+		"Current Board\n"+"---------------------------------------------------------");
 		System.out.println("\n"+Arrays.deepToString(gameBoard).replace("], ", "\n").replace("[", "").replace("]", "").replaceAll(",",""));
 	}
 	
@@ -99,14 +100,10 @@ public class GameBoard {
 	            	nextLine = bufferedReader.readLine();
 	            }
 	        }
-	        
-	        nextLine = bufferedReader.readLine();
+
 	        totalShotsTaken = Integer.parseInt(nextLine);
 	        nextLine = bufferedReader.readLine();
 	        totalShotsHit = Integer.parseInt(nextLine);
-	        
-	        System.out.println(totalShotsTaken);
-	        System.out.println(totalShotsHit);
 		}
 	    catch (FileNotFoundException e){
 	    	System.out.println("Sorry, your file was not found.");
@@ -211,38 +208,62 @@ public class GameBoard {
 	
 	public void playGame() {
 		
+		boolean invalid = false;
 		
 		while(totalShotsHit <= 18) {
 			displayGameBoard();
-			// Get user shot
-			System.out.println("\nPlease enter where you would like to shoot (e.g 1,2)"
-					+ "\nIf you would like to just save the game, enter '-1'."
-					+ "\nIf you would like to save and quit, enter '-2'.\n\nEnter : ");
-			Scanner entry = new Scanner(System.in);
-			int userInput = entry.nextInt();
-		
-			// Process user shot
-			if(userInput == -1) {
-				saveGame();
+			// Check if last shot was an invalid shot
+			if(invalid) {
+				System.out.println("\n--------------------------------------------------------"+
+								   "\nThat shot was not valid.\nMake sure it is between 1 & 9\nMake sure you are not shooting "
+				                 + "somewhere you have already shot,\nPlease try again");
+				invalid = false;
 			}
+			System.out.println("\n--------------------------------------------------------"
+					+ "\nPlease enter where you would like to shoot (e.g 1 'enter' then 2 'enter')"
+					+ "\nIf you would like to save and quit, enter '-1'"
+					+ "\n---------------------------------------------------------"
+					+ "\n\nEnter : ");
 			
-			if(userInput == -2) {
+			// Get user input and process
+			Scanner scanner1 = new Scanner(System.in);
+			int userInput = scanner1.nextInt();
+			
+			if(userInput == -1) {
 				saveGameAndQuit();
 			}
-
-			int userInput2 = entry.nextInt();
+			
+			else if(userInput == -2) {
+				System.exit(0);
+			}
+			
+			System.out.println("\nEnter second point : ");
+			
+			int userInput2 = scanner1.nextInt();
+			
+			if( userInput > 9  || userInput < 1  || userInput2 > 9  || userInput2 <1) {
+				invalid = true;
+			}
 			
 			// If a ship then mark a hit
-			if(shipBoard[userInput][userInput2] == "S") {
-				gameBoard[userInput][userInput2] = "H";
+			else if(shipBoard[userInput2][userInput] == "S") {
+				gameBoard[userInput2][userInput] = "H";
 				totalShotsHit++;
 				totalShotsTaken++;
 			}
 			
 			// If water then mark a miss
-			else if(shipBoard[userInput][userInput2] != "S") {
-				gameBoard[userInput][userInput2] = "M";
+			else if(shipBoard[userInput2][userInput] != "S" && gameBoard[userInput2][userInput] != "M" ) {
+				gameBoard[userInput2][userInput] = "M";
 				totalShotsTaken++;
+			}
+			// If in location already shot at, tell user don't count score
+			else if(shipBoard[userInput2][userInput] == "S" && gameBoard[userInput2][userInput] == "H") {
+				invalid = true;
+			}
+			// If shooting in somewhere they have shot before... tell them
+			else if(gameBoard[userInput2][userInput] == "M") {
+				invalid = true;
 			}
 		}
 		
