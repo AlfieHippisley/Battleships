@@ -28,7 +28,7 @@ public class Ship {
      * position is valid. If not valid it will generate position
      * again. If valid it stores the ships location in the array
      * 
-     * @param shipData array holding infomation on ship posistions
+     * @param shipData array holding information on ship positions
      */
 	
 	public void placeShip(String[][] shipData) {
@@ -85,7 +85,7 @@ public class Ship {
      * @param shipPoint2 second array position of ship
      * @param shipRotation a randomly generated boolean choosing rotation of the ship being placed
      * 
-     * @return valid boolean telling placeShip if posistion is valid or not
+     * @return valid boolean telling placeShip if position is valid or not
      */
 	
 	public static boolean checkLocation(int lengthOfShip, String[][] shipData, int shipPoint1, int shipPoint2, boolean shipRotation) {
