@@ -7,15 +7,34 @@ import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Scanner;
 
+/**
+ * Creates a gameboard and places ship objects onto board
+ * Then 'plays' with ships on board. Also saves and loads
+ * the game board.
+ * 
+ * @author Alfie Hippisley 
+ * @version 1.0
+ */
+
 public class GameBoard {
 	
+	/** records the total shots taken by the player */
 	private int totalShotsTaken;
+	/** records the total shots hit by the player */
 	private int totalShotsHit;
+	/** holds the desired gridSize for the game board */
 	private int gridSize;
+	/** the main array that will be displayed to the user  */
 	private String[][] gameBoard;
+	/** array that will hold information about the ships in the game */
 	private String[][] shipBoard;
 	
+	 /**
+     * Default constructor - initialise fields to default values
+     */
+	
 	public GameBoard(){
+		// Set scores and grid size
 		gridSize = 10;
 		totalShotsTaken = 0;
 		totalShotsHit = 0;
@@ -25,7 +44,12 @@ public class GameBoard {
 		// Ship board array stores ship locations not visible to user
 		shipBoard = new String[gridSize][gridSize];
 	}
-		
+	
+	/**
+     * Sets the arrays for the game to use
+     * 
+     */
+	
 	public void setGrid() {
 		// Fill gameBoard array with 'water'
 		for(int rows=0 ; rows < gridSize ; rows++ ) {
@@ -55,6 +79,11 @@ public class GameBoard {
 		gameBoard[0][0] =".";
 	}
 	
+	/**
+     * Displays the array that is going to be shown to the user
+     * 
+     */
+	
 	public void displayGameBoard() {
 		// Display the current state of the board but move it down the console to reduce screen clutter
 		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"+
@@ -62,21 +91,22 @@ public class GameBoard {
 		System.out.println("\n"+Arrays.deepToString(gameBoard).replace("], ", "\n").replace("[", "").replace("]", "").replaceAll(",",""));
 	}
 	
+	/**
+     * Loads a previous game save
+     * 
+     */
+	
 	public void loadGame() {
 		
-		// Notify user
+		String fileName = "gameSave";
+		String nextLine = null;
+		
 		System.out.println("Loading Game,");
 		
 		// Set file reader and buffered reader
 		FileReader fileReader = null;
 	    BufferedReader bufferedReader = null;
-		
-	    // Set save file name
-		String fileName = "gameSave";
-		
-		// Set string which will hold the data being read in
-		String nextLine = null;
-		
+
 		try {
 			// Create file reader and buffered reader
 	    	fileReader = new FileReader(fileName);
@@ -126,11 +156,22 @@ public class GameBoard {
 		}
 	}
 	
+	/**
+     * Activates the game save and quits the game
+     * 
+     */
+	
 	public void saveGameAndQuit() {
 		saveGame();
 		System.out.print("Game will now quit");
 		System.exit(0);
 	}
+	
+	/**
+     * Saves the array data and score data to the file
+     * File name is stored in the variable fileName
+     * 
+     */
 	
 	public void saveGame() {
 		// Notify user
@@ -181,6 +222,12 @@ public class GameBoard {
         }
 	}
 	
+	/**
+     * Creates the ship objects passing the ships size
+     * It calls on placeShip to place the ships
+     * 
+     */
+	
 	public void generateEnemy() {
 		
 		// Create the ships passing the size of each ship
@@ -206,11 +253,18 @@ public class GameBoard {
 		Sub3.placeShip(shipBoard);
 	}
 	
+	/**
+     * Runs the battleships game allowing user input
+     * Checks if user input is valid of not
+     * 
+     */
+	
 	public void playGame() {
 		
 		boolean invalid = false;
 		
 		while(totalShotsHit <= 18) {
+			
 			displayGameBoard();
 			// Check if last shot was an invalid shot
 			if(invalid) {
@@ -219,6 +273,7 @@ public class GameBoard {
 				                 + "somewhere you have already shot,\nPlease try again");
 				invalid = false;
 			}
+			
 			System.out.println("\n--------------------------------------------------------"
 					+ "\nPlease enter where you would like to shoot (e.g 1 'enter' then 2 'enter')"
 					+ "\nIf you would like to save and quit, enter '-1'"
@@ -270,5 +325,6 @@ public class GameBoard {
 		// Display victory message
 		System.out.println("You have won with a total of " + totalShotsTaken +" shots taken.");
 		System.out.println("Of those " + totalShotsTaken + " shots taken, " + totalShotsHit + " shots hit a target.");
+		System.out.println("\nThanks for Playing!");
 	}
 }

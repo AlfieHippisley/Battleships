@@ -1,6 +1,19 @@
 import java.util.Scanner;
 
+/**
+ * Provides a user menu to access the battleships class
+ * and allows the user to run the game.
+ * 
+ * @author Alfie Hippisley 
+ * @version 1.0
+ */
+
 public class Menu {
+	
+	/**
+     * Shows the main game menu to the user and processes their input
+     * 
+     */
 	
 	public void displayMenu() {
 
@@ -39,6 +52,11 @@ public class Menu {
 		}
 	}
 	
+	/**
+     * Creates a new game board and runs a new game
+     * 
+     */
+	
 	public void startNewGame() {
 
 		GameBoard board1 = new GameBoard();
@@ -48,6 +66,11 @@ public class Menu {
 		
 	}
 	
+	/**
+     * Creates a new game board and loads a game
+     * 
+     */
+	
 	public void loadGame() {
 		
 		GameBoard board2 = new GameBoard();
@@ -55,6 +78,11 @@ public class Menu {
 		board2.loadGame();
 		board2.playGame();
 	}
+	
+	/**
+     * Main Method
+     * 
+     */
 	
 	public static void main(String[] args) {
 		
