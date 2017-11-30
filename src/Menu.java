@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Menu {
 	
-	public void displayMenu(Boolean displayMenu ) {
+	public void displayMenu(Boolean displayMenu) {
 		
 		// Display title
 		System.out.println("\nBattleships\n"+"---------------------------------------------------------");

@@ -100,6 +100,13 @@ public class GameBoard {
 	            }
 	        }
 	        
+	        nextLine = bufferedReader.readLine();
+	        totalShotsTaken = Integer.parseInt(nextLine);
+	        nextLine = bufferedReader.readLine();
+	        totalShotsHit = Integer.parseInt(nextLine);
+	        
+	        System.out.println(totalShotsTaken);
+	        System.out.println(totalShotsHit);
 		}
 	    catch (FileNotFoundException e){
 	    	System.out.println("Sorry, your file was not found.");
@@ -158,6 +165,9 @@ public class GameBoard {
             	}
             }
             
+            // Write scores into file so can be resumed
+            printWriter.println(totalShotsTaken);
+            printWriter.println(totalShotsHit);
             System.out.print("File save complete sucessfully\n");
             // Close print writer
             printWriter.close();
