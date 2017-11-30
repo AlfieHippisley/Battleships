@@ -42,7 +42,9 @@ public class Menu {
 				System.out.println("\nHow to play\n"+"---------------------------------------------------------");
 				System.out.println("The goal of this game is to sink all of the enemy ships.\nYou can not see the ememy ship locations.\n"
 								 + "\nWater is represented by '~'\nA miss is represented by 'o'\nA hit is represented by 'X'"
-								 + "\n\nCordinates are entered by first choosing the horizontal number then the vertical number");
+								 + "\n\nCordinates are entered by first choosing the horizontal "
+								 + "\nnumber then the vertical number");
+				displayMenu();
 			break;
 			
 			// Case 4 (Exit Program)
