@@ -43,9 +43,9 @@ public class Ship {
 			boolean shipRotation = false;
 			
 			// Get values and check location
-			shipPoint1 = getRandom();
-			shipPoint2 = getRandom();
-			shipRotation = getBoolean();
+			shipPoint1 = getRandomNumber();
+			shipPoint2 = getRandomNumber();
+			shipRotation = getRandomBoolean();
 			validShipLocation = checkLocation(lengthOfShip, shipData, shipPoint1, shipPoint2, shipRotation);
 
 			if (validShipLocation) {
@@ -139,7 +139,7 @@ public class Ship {
      *  @return point random number
      */
 	
-	public static int getRandom() {
+	public static int getRandomNumber() {
 		// Generate random number
 		int point = ThreadLocalRandom.current().nextInt(1, 8);
 		return point;
@@ -151,7 +151,7 @@ public class Ship {
      *  @return Math.random true or false boolean value
      */
 	
-	public static boolean getBoolean() {
+	public static boolean getRandomBoolean() {
 		// Generate random boolean
 	       return Math.random() < 0.5;
 	}

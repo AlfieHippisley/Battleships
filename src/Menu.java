@@ -87,9 +87,11 @@ public class Menu {
      */
 	
 	public static void main(String[] args) {
-		
+		boolean menuDisplay = true;
 		Menu menu = new Menu();
-		menu.displayMenu();
+		while(menuDisplay) {
+			menu.displayMenu();
+		}
 	}
 
 }

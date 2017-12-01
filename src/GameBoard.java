@@ -86,7 +86,7 @@ public class GameBoard {
 	
 	public void displayGameBoard() {
 		// Display the current state of the board but move it down the console to reduce screen clutter
-		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"+
+		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"+
 		"Current Board\n"+"---------------------------------------------------------");
 		System.out.println("\n"+Arrays.deepToString(gameBoard).replace("], ", "\n").replace("[", "").replace("]", "").replaceAll(",",""));
 	}
@@ -222,6 +222,48 @@ public class GameBoard {
         }
 	}
 	
+	/** Getters and setters*/
+	
+	public int getTotalShotsTaken() {
+		return totalShotsTaken;
+	}
+
+	public void setTotalShotsTaken(int totalShotsTaken) {
+		this.totalShotsTaken = totalShotsTaken;
+	}
+
+	public int getTotalShotsHit() {
+		return totalShotsHit;
+	}
+
+	public void setTotalShotsHit(int totalShotsHit) {
+		this.totalShotsHit = totalShotsHit;
+	}
+
+	public int getGridSize() {
+		return gridSize;
+	}
+
+	public void setGridSize(int gridSize) {
+		this.gridSize = gridSize;
+	}
+
+	public String[][] getGameBoard() {
+		return gameBoard;
+	}
+
+	public void setGameBoard(String[][] gameBoard) {
+		this.gameBoard = gameBoard;
+	}
+
+	public String[][] getShipBoard() {
+		return shipBoard;
+	}
+
+	public void setShipBoard(String[][] shipBoard) {
+		this.shipBoard = shipBoard;
+	}
+
 	/**
      * Creates the ship objects passing the ships size
      * It calls on placeShip to place the ships
